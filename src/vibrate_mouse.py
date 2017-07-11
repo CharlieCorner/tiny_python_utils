@@ -1,18 +1,21 @@
 import pyautogui
 import time
-from argparse import ArgumentParser
+from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 
 
 def main():
     args = _parse_args()
 
-    if args.timeout_time >= 1:
-        for i in range(0, args.timeout_time):
-            print("Second: %i" % i)
-            vibrate_cursor()
-    else:
-        while True:
-            vibrate_cursor()
+    try:
+        if args.timeout_time >= 1:
+            for i in range(0, args.timeout_time):
+                print("Second: %i" % i)
+                vibrate_cursor()
+        else:
+            while True:
+                vibrate_cursor()
+    except KeyboardInterrupt:
+        print("Exiting...!")
 
 
 def vibrate_cursor():
@@ -27,13 +30,14 @@ def _parse_args():
     """Parse args with argparse
     :returns: args
     """
-    parser = ArgumentParser(description="Make the mouse cursor vibrate.")
+    parser = ArgumentParser(description="Make the mouse cursor vibrate.",
+                            formatter_class=ArgumentDefaultsHelpFormatter)
 
     parser.add_argument('-t',
                         default=-1,
                         dest="timeout_time",
                         type=int,
-                        help="The amount of time in seconds before exiting. Any value less than 1 equals to infinity. Defaults to: %default")
+                        help="The amount of time in seconds before exiting. Any value less than 1 equals to infinity.")
     return parser.parse_args()
 
 
